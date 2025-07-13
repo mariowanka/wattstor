@@ -1,14 +1,14 @@
 services:
-  db: 
+  db:
     image: postgres:17.5
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: secretpassword
       POSTGRES_DB: wattstor
     ports:
-      - "5432:5432"    
+      - "5432:5432"
     volumes:
-      - db-data:/var/lib/postgresql/data 
+      - db-data:/var/lib/postgresql/data
 
   app:
     build:
@@ -23,10 +23,8 @@ services:
     environment:
       - DATABASE_URL=postgresql+psycopg2://postgres:postgres@db:5432/postgres
 
-
-
   proxy:
-    build: 
+    build:
       context: proxy
       dockerfile: Dockerfile
     ports:

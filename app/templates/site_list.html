@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}Site overview{% endblock %}
+
+{% block body %}
+  {% for site in sites %}
+    {{ site }}
+  {% endfor %}
+{% endblock %}

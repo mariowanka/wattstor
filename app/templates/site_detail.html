@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}Site {{ site.name }} detail{% endblock %}
+
+{% block body %}
+  {{ site.site }}
+  {% for device in site.devices %}
+    {{ device }}
+  {% endfor %}
+{% endblock %}

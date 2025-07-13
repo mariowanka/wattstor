@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}Device {{ device.type }} detail{% endblock %}
+
+{% block body %}
+  {{ device.device }}
+  {% for record in device.history %}
+    {{ record }}
+  {% endfor %}
+{% endblock %}
