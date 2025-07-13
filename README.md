@@ -72,3 +72,36 @@ unit).
 2. Test suite demonstrating the behaviour.
 3. (Optional) `docker-compose.yml`, migration scripts, seed data.
    Submit a link to a public Git repository (GitHub / GitLab / Bitbucket) or a zipped archive.
+
+# Solution
+
+This repository is work in progress aiming to demonstrate principles of solution throughout the whole stack.
+
+## Done
+
+### CI/CD
+
+Application is packed in Docker container with defined `docker-compose.yaml` using official PostgreSQL as database and nginx as production proxy.
+
+### Schema
+
+Core of facility (the application itself - module containing sites and devices) and auth is defined in SQL as alembic migration with model layer of corresponding classes for application usage.
+
+### Application structure
+
+The application is structured in two dimensions 'horizontally' in modules taking care of separate business matters. Those are not strictly divided, for example authentication supports other modules. 'Vertical' division separates code into layers with their own general purpose:
+
+- presentation: definition of routes, validation of requests, redirection, etc.
+- application: decides how the request will be handled
+- infrastructure: takes care of any data manipulation
+- model: Data abstraction for application usage
+
+## TODO
+
+- finish PostgreSQL configuration and automatic migrations
+- define CI/CD pipelines building system, doing static checks and running tests
+- integration testing
+- apply auth module to verify user and decide access
+- metric subscription
+- templates and flash messages
+- use more fitting database for metrics history (like ClickHouse)
