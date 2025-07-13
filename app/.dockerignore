@@ -1,0 +1,13 @@
+.DS_Store
+.git
+**/__pycache__
+**/tests
+*.pyc
+*.pyo
+*.pyd
+.Python
+.pytest_cache
+build.sh
+deploy.yml
+README.md
+venv
