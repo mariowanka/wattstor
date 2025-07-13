@@ -26,7 +26,7 @@ CREATE EXTENSION pgcrypto;
 CREATE TABLE users (
     PRIMARY KEY (id),
     id uuid NOT NULL,
-    username text NOT NULL,
+    username text UNIQUE NOT NULL,
     password text NOT NULL,
     is_technician bool NOT NULL
 );

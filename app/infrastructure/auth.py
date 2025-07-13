@@ -1,3 +1,4 @@
+from orjson import loads
 from sqlalchemy import Engine
 from sqlalchemy import MetaData
 from sqlalchemy import Table
@@ -7,6 +8,9 @@ from sqlalchemy import select
 from sqlalchemy import update
 
 from app.model import exceptions
+from app.model.auth import User
+from app.model.json import structure
+from app.model.json import unstructure
 
 
 class AuthRepository:
@@ -26,14 +30,27 @@ class AuthRepository:
 
         self._engine = engine
 
-    def create_user(self, username: str, password: str):
+    def get_user(self, username: str) -> User | None:
+        query = select(self._users).where(self._users.c.username == username)
         with self._engine.connect() as connection:
-            check_query = select(self._users).where(self._users.c.username == username)
+            if (row := connection.execute(query).fetchone()) is not None:
+                return structure(loads(row.payload), User)
+            else:
+                return None
+
+    def create_user(self, user: User, password: str):
+        with self._engine.connect() as connection:
+            check_query = select(self._users).where(
+                self._users.c.username == user.username
+            )
             if connection.execute(check_query).fetchone() is not None:
                 raise exceptions.UserExistsException
 
             insert_query = insert(self._users).values(
-                username=username, password=func.crypt(password, func.gen_salt("md5"))
+                {
+                    **unstructure(user),
+                    "password": func.crypt(password, func.gen_salt("md5")),
+                }
             )
             connection.execute(insert_query)
 
